@@ -51,14 +51,3 @@ func (c *Controller) Transition() {
 	c.plane = ShiftCellsOnReachingBoundary(newPlane, boundary)
 	c.displayStatus(c.plane)
 }
-
-func (c *Controller) shiftPlane(plane [][]Health, shift Coordinate) [][]Health {
-	for row, rowValues := range plane {
-		for column, health := range rowValues {
-			if health == Live {
-				plane[uint(row)-shift.Row][uint(column)-shift.Column] = health
-			}
-		}
-	}
-	return plane
-}
