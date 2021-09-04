@@ -48,7 +48,6 @@ func (c *Controller) Transition() {
 			newPlane[rowIndex][colIndex] = newHealth
 		}
 	}
-	c.displayStatus(newPlane)
 	c.plane = ShiftCellsOnReachingBoundary(newPlane, boundary)
 	c.displayStatus(c.plane)
 }
