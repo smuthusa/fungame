@@ -35,8 +35,7 @@ func (v *NeighbourCellVisitor) Visit(currentHealth Health, row int, column int, 
 			}
 		}
 	}
-	newHealthState := v.transitionRule.Transition(currentHealth, liveNeighbours)
-	return newHealthState
+	return v.transitionRule.Transition(currentHealth, liveNeighbours)
 }
 
 func isWithinBoundary(pos int, maxPos uint) bool {
