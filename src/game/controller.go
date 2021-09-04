@@ -15,7 +15,7 @@ type Controller struct {
 }
 
 func NewController(boundary Coordinate, visitor visitor.NeighbourCellVisitor, seed seed.Seed, printer printer.Printer) *Controller {
-	plane := newPlane(boundary)
+	plane := makeNewPlane(boundary)
 	plane = seed(plane)
 	return &Controller{
 		plane:         plane,
@@ -25,7 +25,7 @@ func NewController(boundary Coordinate, visitor visitor.NeighbourCellVisitor, se
 	}
 }
 
-func newPlane(boundary Coordinate) [][]Health {
+func makeNewPlane(boundary Coordinate) [][]Health {
 	plane := make([][]Health, boundary.Row)
 	for i := range plane {
 		plane[i] = make([]Health, boundary.Column)
@@ -40,14 +40,13 @@ func (c *Controller) Transition() {
 	healthCallback := func(row int, column int) Health {
 		return c.plane[row][column]
 	}
-	boundary := c.boundary
-	newPlane := newPlane(boundary)
+	newPlane := makeNewPlane(c.boundary)
 	for rowIndex, rowValues := range c.plane {
 		for colIndex, health := range rowValues {
 			newHealth := c.cellVisitor.Visit(health, rowIndex, colIndex, healthCallback)
 			newPlane[rowIndex][colIndex] = newHealth
 		}
 	}
-	c.plane = ShiftCellsOnReachingBoundary(newPlane, boundary)
+	c.plane = ShiftCellsOnReachingBoundary(newPlane, c.boundary)
 	c.displayStatus(c.plane)
 }
